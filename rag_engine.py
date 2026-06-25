@@ -41,11 +41,42 @@ class NCFTRag:
 
         print("Embedding Model Loaded!")
 
+    def rewrite_query(self, question, history):
+
+        prompt = f"""
+    You are a query rewriting assistant.
+
+    Convert the user's question into a complete standalone question.
+
+    Use conversation history if needed.
+
+    Conversation History:
+    {history}
+
+    Current Question:
+    {question}
+
+    Return only the rewritten question.
+    """
+
+        response = self.llm.generate_content(prompt)
+
+        return response.text.strip()
+
     def ask(self, question, history=""):
 
         # Query Embedding
+        standalone_question = self.rewrite_query(
+            question,
+            history
+        )
+
+        print("\nRewritten Query:")
+        print(standalone_question)
+
+        # Query Embedding
         query_embedding = self.embed_model.encode(
-            question
+            standalone_question
         )
 
         query_embedding = np.array(
@@ -93,4 +124,4 @@ Current Question:
             prompt
         )
 
-        return response.text
+        return response.text, standalone_question

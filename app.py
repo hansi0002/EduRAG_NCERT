@@ -8,7 +8,7 @@ load_dotenv()
 API_KEY = os.getenv("GOOGLE_API_KEY")
 
 
-@st.cache_resource
+#@st.cache_resource
 def load_rag():
     return NCFTRag(API_KEY)
 
@@ -76,10 +76,11 @@ if question:
 
         with st.spinner("Thinking..."):
 
-            answer = rag.ask(
+            answer, rewritten_query = rag.ask(
                 question,
                 history
             )
+        st.caption(f"Rewritten Query: {rewritten_query}")
 
         st.markdown(answer)
 
