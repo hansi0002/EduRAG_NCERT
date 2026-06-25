@@ -41,7 +41,7 @@ class NCFTRag:
 
         print("Embedding Model Loaded!")
 
-    def ask(self, question):
+    def ask(self, question, history=""):
 
         # Query Embedding
         query_embedding = self.embed_model.encode(
@@ -71,16 +71,20 @@ class NCFTRag:
 You are an expert NCERT Class 9 Mathematics Teacher.
 
 Instructions:
-1. Answer only from the provided context.
-2. Explain in simple student-friendly language.
-3. Give examples whenever possible.
-4. If the answer is not present in the context, say:
-   'I could not find this in the NCERT knowledge base.'
+- Answer only from the provided context.
+- Use conversation history when relevant.
+- Explain in simple student-friendly language.
+- Give examples whenever possible.
+- If the answer is not present in the context, say:
+  "I could not find this in the NCERT knowledge base."
+
+Conversation History:
+{history}
 
 Context:
 {context}
 
-Question:
+Current Question:
 {question}
 """
 
